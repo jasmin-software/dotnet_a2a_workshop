@@ -1,12 +1,11 @@
-﻿
-
-
-using System.ClientModel;
-using System.Text.Json;
-using A2A;
+﻿using A2A;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using OpenAI;
+using System.ClientModel;
+using System.Text.Json;
+
+
 
 string githubToken = builder.Configuration["GitHub:Token"] ?? throw new InvalidOperationException("GitHub:Token is not set.");
 string endpoint = builder.Configuration["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inference";

@@ -15,50 +15,42 @@ string? token = config["GitHub:Token"];
 string? endpoint = config["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inference";
 string? model = config["GitHub:Model"] ?? "openai/gpt-4o-mini";
 
-A2ACardResolver cardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
-AgentCard agentCard = await cardResolver.GetAgentCardAsync();
+A2ACardResolver agentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
+AgentCard agentCard = await agentCardResolver.GetAgentCardAsync(); // like a business card 
 
 Console.WriteLine("\nAgent card details:");
 JsonSerializerOptions s_indentedOptions = new(A2AJsonUtilities.DefaultOptions)
     {
         WriteIndented = true
     };
-// Console.WriteLine(JsonSerializer.Serialize(agentCard, s_indentedOptions)); // THIS IS GOOD // KEEP
+Console.WriteLine(JsonSerializer.Serialize(agentCard, s_indentedOptions)); // THIS IS GOOD // KEEP
 
 
-// A2AClient agentClient = new(new Uri(agentCard.SupportedInterfaces[0].Url));
 A2AClient a2aChatClient = new(new Uri(agentCard.Url));
-AgentMessage userMessage1 = new()
-        {
-            Role = MessageRole.User,
-            MessageId = Guid.NewGuid().ToString(),
-            Parts = new Part[]
-            {
-                new TextPart { Text = "What is the weather like in Vancouver?" }
-            }.ToList()
-        };
 
-// 4. Send the message using non-streaming API
-Console.WriteLine("\nNon-Streaming Message Communication");
-Console.WriteLine($" Sending message via non-streaming API: {userMessage1.Parts[0].AsTextPart().Text}");
 
 // Send the message and get the response
+Console.WriteLine("\nNon-Streaming Message Communication");
 var directSend = await a2aChatClient.AsAIAgent().RunAsync("What is the weather like in Vancouver?");
+Console.WriteLine($" Received complete response from agent: {directSend.Text}");
+
+var directStreamingSend = a2aChatClient.AsAIAgent().RunStreamingAsync("What is the weather like in Vancouver?");
+Console.WriteLine("\nStreaming Message Communication"); 
+await foreach (var update in directStreamingSend)
+{
+    foreach (var content in update.Contents)
+    {
+        if (content is TextContent textContent)
+        {
+            Console.Write(textContent.Text);
+        }
+    }
+}
 
 
+// A2A as tool
+AIAgent remoteAgent = await agentCardResolver.GetAIAgentAsync();
 
-// var lll = response.Message!;
-// Display the response
-// Console.WriteLine($" Received complete response from agent: {response.Parts[0].Text}");
-
-// 5. Send the message using streaming API
-// await SendStreamingMessageAsync(agentClient, userMessage1);
-
-
-
-AIAgent remoteAgent = await cardResolver.GetAIAgentAsync();
-
-// Create AI agent
 var chatClient = new OpenAIClient(
     new ApiKeyCredential(token!),
     new OpenAIClientOptions()
@@ -67,12 +59,13 @@ var chatClient = new OpenAIClient(
     })
     .GetChatClient(model).AsIChatClient();
 
-var agent2 = chatClient.AsAIAgent(
+var agent = chatClient.AsAIAgent(
         name: "Assistant",
-        instructions: @"You are a personal assistant", 
+        instructions: @"You are a personal assistant. You are concise with your answers.", 
         tools: [remoteAgent.AsAIFunction()]);
 
-var asTool = await agent2.RunAsync("What is the weather like in Vancouver?");
+var asTool = await agent.RunAsync("What is the weather like in Vancouver?");
+Console.WriteLine($"\n\n{asTool.Text}");
 
 
 // List<ChatMessage> messages = [];

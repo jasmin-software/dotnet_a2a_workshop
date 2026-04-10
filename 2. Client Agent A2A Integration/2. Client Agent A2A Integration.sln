@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2. A2A Agent Implementation", "2. A2A Agent Implementation.csproj", "{77563BB8-F408-8A14-2838-179931CE482D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2. Client Agent A2A Integration", "2. Client Agent A2A Integration.csproj", "{D5617B82-421A-DBDE-4ECE-5F2227A2D2F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{77563BB8-F408-8A14-2838-179931CE482D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77563BB8-F408-8A14-2838-179931CE482D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77563BB8-F408-8A14-2838-179931CE482D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77563BB8-F408-8A14-2838-179931CE482D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5617B82-421A-DBDE-4ECE-5F2227A2D2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5617B82-421A-DBDE-4ECE-5F2227A2D2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5617B82-421A-DBDE-4ECE-5F2227A2D2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5617B82-421A-DBDE-4ECE-5F2227A2D2F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DD5CE466-AA3F-4571-A86C-89DFF07CEBE1}
+		SolutionGuid = {028CFAFD-AB65-4EE4-90B4-3F86D26225FD}
 	EndGlobalSection
 EndGlobal

@@ -1,8 +1,8 @@
 
 ``` bash
-dotnet new web -n '3. Client Agent A2A Integration'
+dotnet new web -n '2. Client Agent A2A Integration'
 
-cd '3. Client Agent A2A Integration'
+cd '2. Client Agent A2A Integration'
 dotnet new gitignore
 
 dotnet add package Azure.AI.OpenAI --version 2.9.0-beta.1

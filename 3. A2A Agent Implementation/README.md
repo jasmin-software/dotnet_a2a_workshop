@@ -1,7 +1,7 @@
 ``` bash
-dotnet new web -n '2. A2A Agent Implementation'
+dotnet new web -n '3. A2A Agent Implementation'
 
-cd '2. A2A Agent Implementation'
+cd '3. A2A Agent Implementation'
 dotnet new gitignore
 
 dotnet add package Microsoft.Agents.AI.Hosting.A2A.AspNetCore --version 1.0.0-preview.260402.1

@@ -10,8 +10,10 @@ dotnet add package Microsoft.Extensions.AI.OpenAI --version 10.4.1
 dotnet add package Swashbuckle.AspNetCore --version 10.1.7
 ```
 
-# TODO: Add the Tools folder and its content
-# Suggestion: Maybe people can just clone this project with the Tools folder completed and they can just focus on the content in Program.cs
+# TODO: 
+## Add instruction to add the Tools folder and its content
+# OR Suggestion: 
+## Maybe people can just clone this project with the Tools folder completed and they can just focus on the content in Program.cs
 
 Set up chat client configuration
 ``` C#

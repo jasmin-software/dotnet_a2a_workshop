@@ -1,9 +1,14 @@
+``` bash
 dotnet new web -n '2. A2A Agent Implementation'
+
+cd '2. A2A Agent Implementation'
+dotnet new gitignore
 
 dotnet add package Microsoft.Agents.AI.Hosting.A2A.AspNetCore --version 1.0.0-preview.260402.1
 dotnet add package Microsoft.AspNetCore.OpenApi --version 10.0.5
 dotnet add package Microsoft.Extensions.AI.OpenAI --version 10.4.1
 dotnet add package Swashbuckle.AspNetCore --version 10.1.7
+```
 
 Set up chat client configuration
 ``` C#

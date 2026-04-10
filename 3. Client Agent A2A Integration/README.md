@@ -1,9 +1,14 @@
 
+``` bash
 dotnet new web -n '3. Client Agent A2A Integration'
+
+cd '3. Client Agent A2A Integration'
+dotnet new gitignore
 
 dotnet add package Azure.AI.OpenAI --version 2.9.0-beta.1
 dotnet add package Microsoft.Agents.AI.A2A --version 1.0.0-preview.260402.1
 dotnet add package Microsoft.Agents.AI.OpenAI --version 1.0.0
+```
 
 // Set up chat client configuration
 ``` C#

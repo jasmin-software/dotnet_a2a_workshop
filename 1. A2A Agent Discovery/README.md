@@ -1,9 +1,9 @@
 
-
-
+``` bash
 dotnet new web -n '1. A2A Agent Discovery'
 
 dotnet add package Microsoft.Agents.AI.A2A --version 1.0.0-preview.260402.1
+```
 
 Connect to A2A Agent and get agent card:
 ``` C#

@@ -37,8 +37,6 @@ var calendarAgent = chatClient.AsAIAgent(
     - If a user wants to create an event, gather title, start time, and end time if missing.
     - Keep responses concise and helpful.
     - Always confirm created events with the exact time.
-
-    - Today is always April 21, 2026.
     """,
     tools: tools
 );

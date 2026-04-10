@@ -5,13 +5,12 @@ using Microsoft.Extensions.AI;
 using OpenAI;
 using System.ClientModel;
 using System.Text.Json;
-using A2AJsonUtilities = A2A.A2AJsonUtilities;
 
 // A2A as agent
 A2ACardResolver agentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
 AgentCard agentCard = await agentCardResolver.GetAgentCardAsync();
 
-JsonSerializerOptions s_indentedOptions = new(A2AJsonUtilities.DefaultOptions){ WriteIndented = true};
+JsonSerializerOptions s_indentedOptions = new(A2A.A2AJsonUtilities.DefaultOptions){ WriteIndented = true};
 // Console.WriteLine("\nAgent card details:");
 // Console.WriteLine(JsonSerializer.Serialize(agentCard, s_indentedOptions));
 

@@ -30,19 +30,3 @@ Send message and get the response
 var response = await chatClient.AsAIAgent().RunAsync(message);
 Console.WriteLine($"Received complete response from agent: {response.Text}\n");
 ```
-
-Send message and stream the response
-``` C#
-var streamingResponse = chatClient.AsAIAgent().RunStreamingAsync(message);
-Console.WriteLine("Streaming response from agent:");
-await foreach (var update in streamingResponse)
-{
-    foreach (var content in update.Contents)
-    {
-        if (content is TextContent textContent)
-        {
-            Console.Write(textContent.Text);
-        }
-    }
-}
-```

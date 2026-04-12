@@ -2,7 +2,7 @@ In the previous example, we were able to discover the capabilities of a weather 
 
 ### Setup
 
-Create a simple .NET web application with the following terminal window command:
+Create a simple .NET web application with the following terminal window commands:
 
 ``` bash
 dotnet new web -n '2. Client Agent A2A Integration'

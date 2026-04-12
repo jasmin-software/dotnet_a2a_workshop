@@ -97,7 +97,7 @@ Received complete response from agent: {"current":{"time":"2026-04-12T08:45","te
 </details>
 
 <br />
-Optionally, you can also send message and stream the response.  
+Optionally, you can also stream the response from the agent.  
 <br><br>
 Comment out this code.
 

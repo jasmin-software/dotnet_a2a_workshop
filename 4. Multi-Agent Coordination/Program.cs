@@ -52,7 +52,7 @@ var activitySummaryAgent = chatClient.AsAIAgent(
 
 AIAgent workflowAgent = AgentWorkflowBuilder.BuildSequential(weatherAgent, calendarAgent, activitySummaryAgent).AsAIAgent();
 
-// Send message to agent
+// Send message to agent and stream response
 bool isDebug = true; // Toggle this to print messages from A2A agents
 AgentSession session = await workflowAgent.CreateSessionAsync();
 List<ChatMessage> messages = [];
@@ -92,7 +92,7 @@ try
                         {
                             lastAuthor = update.AuthorName;
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"\n** {update.AuthorName} **");
+                            Console.WriteLine($"\n[{update.AuthorName}]");
                             Console.ResetColor();
                         }
                         if (update.AuthorName == activitySummaryAgent.Name)

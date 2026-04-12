@@ -75,7 +75,7 @@ AIAgent workflowAgent = AgentWorkflowBuilder.BuildSequential(weatherAgent, calen
 
 // Send message to agent
 ``` C#
-bool isDebug = true;
+bool isDebug = true; // Toggle this to print messages from A2A agents
 AgentSession session = await workflowAgent.CreateSessionAsync();
 List<ChatMessage> messages = [];
 Console.Write("\nEnter the outdoor activity you'd like to plan or :q to quit.\n");

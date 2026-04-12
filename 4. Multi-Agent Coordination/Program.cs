@@ -6,13 +6,6 @@ using Microsoft.Agents.AI.Workflows;
 using Microsoft.Extensions.AI;
 using OpenAI;
 
-/*
-dotnet add package Azure.AI.OpenAI --version 2.9.0-beta.1
-dotnet add package Microsoft.Agents.AI.A2A --version 1.0.0-preview.260402.1
-dotnet add package Microsoft.Agents.AI.OpenAI --version 1.0.0
-dotnet add package Microsoft.Agents.AI.Workflows --version 1.1.0
-*/
-
 // Set up chat client configuration
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -40,6 +33,7 @@ AIAgent weatherAgent = await weatherAgentCardResolver.GetAIAgentAsync();
 A2ACardResolver calendarAgentCardResolver = new A2ACardResolver(new Uri("http://localhost:5098/"));
 AIAgent calendarAgent = await calendarAgentCardResolver.GetAIAgentAsync();
 
+// Create a client agent to summarize the event created
 var activitySummaryAgent = chatClient.AsAIAgent(
         name: "Assistant",
         instructions: @"You are a calendar event summary assistant.
@@ -59,7 +53,7 @@ var activitySummaryAgent = chatClient.AsAIAgent(
 AIAgent workflowAgent = AgentWorkflowBuilder.BuildSequential(weatherAgent, calendarAgent, activitySummaryAgent).AsAIAgent();
 
 // Send message to agent
-bool isDebug = true;
+bool isDebug = true; // Toggle this to print messages from A2A agents
 AgentSession session = await workflowAgent.CreateSessionAsync();
 List<ChatMessage> messages = [];
 Console.Write("\nEnter the outdoor activity you'd like to plan or :q to quit.\n");

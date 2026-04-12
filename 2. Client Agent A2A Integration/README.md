@@ -40,6 +40,7 @@ Delete any existing code in `Program.cs`.
 Add the following code in sequence.
 
 ``` C#
+// Read configuration settings
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)

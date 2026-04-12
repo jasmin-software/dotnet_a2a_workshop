@@ -8,10 +8,203 @@ dotnet add package Microsoft.Agents.AI.Hosting.A2A.AspNetCore --version 1.0.0-pr
 dotnet add package Microsoft.AspNetCore.OpenApi --version 10.0.5
 dotnet add package Microsoft.Extensions.AI.OpenAI --version 10.4.1
 dotnet add package Swashbuckle.AspNetCore --version 10.1.7
+mkdir Tools
+```
+
+Replace `appsettings.Development.json` with this JSON code:
+
+```json
+{
+    "GitHub": {
+        "Token": "put-your-github-personal-access-token-here",
+        "ApiEndpoint": "https://models.github.ai/inference",
+        "Model": "openai/gpt-4o-mini"
+    }
+}
+```
+
+> [!NOTE]
+>
+> Replace `put-your-github-personal-access-token-here` with your GitHub Personal Access Token. 
+
+Edit the `.gitignore` file and add to it `appsettings.Development.json` so that your secrets do not find their way into source control by mistake.
+
+## Tools
+
+Add the following C# class files into the `Tools` folder:
+
+### CalendarEvents.cs
+
+```C#
+namespace A2AAgent.Tools;
+
+public sealed class CalendarEvent {
+    public required string Id { get; set; }
+    public required string Title { get; set; }
+    public required DateTime Start { get; set; }
+    public required DateTime End { get; set; }
+    public string? Location { get; set; }
+    public string? Description { get; set; }
+}
+```
+
+### ICalendarStore.cs
+
+```c#
+namespace A2AAgent.Tools;
+
+public interface ICalendarStore {
+    IReadOnlyList<CalendarEvent> GetEvents(DateOnly date);
+    void AddEvent(CalendarEvent calendarEvent);
+}
+```
+
+### InMemoryCalendarStore
+
+```C#
+namespace A2AAgent.Tools;
+
+public sealed class InMemoryCalendarStore : ICalendarStore {
+    private readonly List<CalendarEvent> _events =
+    [
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Work",
+            Start = new DateTime(2026, 4, 21, 9, 0, 0),
+            End = new DateTime(2026, 4, 21, 17, 0, 0),
+            Location = "Office"
+        },
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Commute to BCIT Downtown Campus",
+            Start = new DateTime(2026, 4, 21, 17, 0, 0),
+            End = new DateTime(2026, 4, 21, 18, 0, 0),
+            Location = "Train"
+        },
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Workshop: Agent-to-Agent (A2A) with Microsoft Agent Framework",
+            Start = new DateTime(2026, 4, 21, 18, 0, 0),
+            End = new DateTime(2026, 4, 21, 20, 0, 0),
+            Location = "BCIT Downtown Campus, Room 645"
+        },
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Sleep",
+            Start = new DateTime(2026, 4, 21, 23, 0, 0),
+            End = new DateTime(2026, 4, 22, 7, 0, 0),
+            Location = "Bedroom"
+        },
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Work",
+            Start = new DateTime(2026, 4, 22, 9, 0, 0),
+            End = new DateTime(2026, 4, 22, 17, 0, 0),
+            Location = "Office"
+        },
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Create my own A2A agent!",
+            Start = new DateTime(2026, 4, 22, 19, 0, 0),
+            End = new DateTime(2026, 4, 22, 20, 0, 0),
+            Location = "Home"
+        },
+        new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Sleep",
+            Start = new DateTime(2026, 4, 22, 23, 0, 0),
+            End = new DateTime(2026, 4, 23, 7, 0, 0),
+            Location = "Bedroom"
+        }
+    ];
+
+    public IReadOnlyList<CalendarEvent> GetEvents(DateOnly date) {
+        return _events
+            .Where(e => DateOnly.FromDateTime(e.Start) == date)
+            .ToList();
+    }
+
+    public void AddEvent(CalendarEvent calendarEvent) {
+        _events.Add(calendarEvent);
+    }
+}
+```
+
+### CalendarTool.cs
+
+```C#
+using System.ComponentModel;
+
+namespace A2AAgent.Tools;
+
+internal static class CalendarTool {
+    private static ICalendarStore _calendarStore = new InMemoryCalendarStore();
+
+    public static void Initialize(ICalendarStore calendarStore)
+    {
+        _calendarStore = calendarStore;
+    }
+
+    [Description("Get calendar events for a given date in yyyy-MM-dd format.")]
+    public static string GetEventsOnDate(
+        [Description("Date in yyyy-MM-dd format")] string date) {
+        if (!DateOnly.TryParse(date, out var parsedDate))
+        {
+            return "Invalid date. Please provide the date in yyyy-MM-dd format.";
+        }
+
+        var events = _calendarStore.GetEvents(parsedDate);
+
+        if (events.Count == 0) {
+            return $"No events found on {parsedDate:yyyy-MM-dd}.";
+        }
+
+        var lines = events
+            .OrderBy(e => e.Start)
+            .Select(e => $"- {e.Title}: {e.Start:yyyy-MM-dd HH:mm} to {e.End:yyyy-MM-dd HH:mm}");
+
+        return string.Join(Environment.NewLine, lines);
+    }
+
+    [Description("Create a calendar event.")]
+    public static string CreateEvent(
+        [Description("Event title")] string title,
+        [Description("Start time in ISO format, for example 2026-04-10T14:00:00")] string start,
+        [Description("End time in ISO format, for example 2026-04-10T15:00:00")] string end,
+        [Description("Optional event location")] string? location = null,
+        [Description("Optional event description")] string? description = null)
+    {
+        if (!DateTime.TryParse(start, out var startTime)) {
+            return "Invalid start time. Use ISO format like 2026-04-10T14:00:00.";
+        }
+
+        if (!DateTime.TryParse(end, out var endTime)) {
+            return "Invalid end time. Use ISO format like 2026-04-10T15:00:00.";
+        }
+
+        if (endTime <= startTime) {
+            return "End time must be after start time.";
+        }
+
+        var calendarEvent = new CalendarEvent {
+            Id = Guid.NewGuid().ToString(),
+            Title = title,
+            Start = startTime,
+            End = endTime,
+            Location = location,
+            Description = description
+        };
+
+        _calendarStore.AddEvent(calendarEvent);
+
+        return
+            $"Created event '{calendarEvent.Title}' from " +
+            $"{calendarEvent.Start:yyyy-MM-dd HH:mm} to {calendarEvent.End:yyyy-MM-dd HH:mm}.";
+    }
+}
 ```
 
 # TODO: 
-## Add instruction to add the Tools folder and its content
 # OR Suggestion: 
 ## Maybe people can just clone this project with the Tools folder completed and they can just focus on the content in Program.cs
 

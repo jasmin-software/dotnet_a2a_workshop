@@ -1,5 +1,6 @@
-public sealed class CalendarEvent
-{
+namespace A2AAgent.Tools;
+
+public sealed class CalendarEvent {
     public required string Id { get; set; }
     public required string Title { get; set; }
     public required DateTime Start { get; set; }

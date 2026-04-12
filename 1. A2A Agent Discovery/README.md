@@ -12,7 +12,7 @@ dotnet add package Microsoft.Agents.AI.A2A --version 1.0.0-preview.260402.1
 # Program.cs
 Open your application in VS code. Replace the content in `Program.cs` with the following C# code in sequence:
 
-Connect to A2A Cloud Agent and get agent card:
+Connect to the web A2A Agent and get agent card:
 
 ``` C#
 using System.Text.Json;

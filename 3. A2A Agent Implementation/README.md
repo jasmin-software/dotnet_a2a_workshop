@@ -132,6 +132,9 @@ public sealed class InMemoryCalendarStore : ICalendarStore {
 
 ### CalendarTool.cs
 
+The `CalendarTool` has the smarts to carry out two related tasks. It can:
+- Get all events that fall on a specific date
+- Create an event given: the event title, start time, end time, event location (optional), and event description (optionsl)
 ```C#
 using System.ComponentModel;
 
@@ -140,16 +143,14 @@ namespace A2AAgent.Tools;
 internal static class CalendarTool {
     private static ICalendarStore _calendarStore = new InMemoryCalendarStore();
 
-    public static void Initialize(ICalendarStore calendarStore)
-    {
+    public static void Initialize(ICalendarStore calendarStore) {
         _calendarStore = calendarStore;
     }
 
     [Description("Get calendar events for a given date in yyyy-MM-dd format.")]
     public static string GetEventsOnDate(
         [Description("Date in yyyy-MM-dd format")] string date) {
-        if (!DateOnly.TryParse(date, out var parsedDate))
-        {
+        if (!DateOnly.TryParse(date, out var parsedDate)) {
             return "Invalid date. Please provide the date in yyyy-MM-dd format.";
         }
 
@@ -208,12 +209,14 @@ internal static class CalendarTool {
 # OR Suggestion: 
 ## Maybe people can just clone this project with the Tools folder completed and they can just focus on the content in Program.cs
 
-Set up chat client configuration
+Replace `Program.cs` with the following code:
+
 ``` C#
 using A2A;
 using A2A.AspNetCore;
 using Microsoft.Extensions.AI;
 using OpenAI;
+using A2AAgent.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ICalendarStore, InMemoryCalendarStore>();
@@ -226,7 +229,7 @@ string endpoint = builder.Configuration["GitHub:ApiEndpoint"] ?? "https://models
 string model = builder.Configuration["GitHub:Model"] ?? "openai/gpt-4o-mini";
 ```
 
-Create chat client and agent
+Create chat client and agent.
 ``` C#
 IChatClient chatClient = new OpenAIClient(
     new System.ClientModel.ApiKeyCredential(githubToken),
@@ -268,10 +271,10 @@ app.UseSwagger();
 app.UseSwaggerUI();
 ```
 
-Customize agent card
+Customize agent card.
 ``` C#
-AgentCard calendarAgentCard = new AgentCard
-{
+// customize agent card
+AgentCard calendarAgentCard = new AgentCard {
     Name = "Calendar Agent",
     Description = "A calendar assistant that can list and create events for a particular date.",
     Version = "1.0.0",
@@ -300,6 +303,7 @@ AgentCard calendarAgentCard = new AgentCard
 
 Expose agent via A2A protocol
 ``` C#
+// expose agent via A2A protocol
 app.MapA2A(
     calendarAgent, 
     path: "/", 

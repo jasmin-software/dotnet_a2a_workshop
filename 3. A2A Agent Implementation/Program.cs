@@ -1,5 +1,6 @@
 using A2A;
 using A2A.AspNetCore;
+using A2AAgent.Tools;
 using Microsoft.Extensions.AI;
 using OpenAI;
 
@@ -24,22 +25,21 @@ IChatClient chatClient = new OpenAIClient(
 
 var calendarAgent = chatClient.AsAIAgent(
     name: "calendar",
-    instructions:
-    """
-    You are a calendar assistant.
-    You list calendar events given a date, and you create new events with 
-    a title, start time, end time, and optional location and description.
+    instructions:@"You are a calendar assistant for reading and creating events.
+    Capabilities:
+    - Retrieve events for a given date.
+    - Create events with title, start time, end time, and optional location/description.
 
-    Rules:
-    - When the user asks what is on a day, use the GetEventsOnDate tools.
-    - If a user wants to create an event, gather title, start time, and end time if missing, 
-      and use the CreateEvent tool.
-    - Do not create the event if there is already an event that overlaps with the requested time.
-    - Keep responses concise and helpful.
-    - Always confirm created events with the exact time.
+    Behavior:
+    - Be concise and action-oriented.
+    - Never ask for confirmation.
 
-    - Today is 2026-04-21.
-    """,
+    Output:
+    - Retrieval: '- {Title}: {Start} to {End}' (bullets only, no extra text).
+    - Creation: 'Event '{Title}' created on {Start} to {End}.'
+
+    Context:
+    - Today is 2026-04-21.",
     tools: [
         AIFunctionFactory.Create(CalendarTool.GetEventsOnDate),
         AIFunctionFactory.Create(CalendarTool.CreateEvent)

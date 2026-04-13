@@ -1,3 +1,13 @@
+This is code is can be built on top of Step 2. or for simplicity, we can also spin another project for this step.
+
+``` C#
+dotnet add package Azure.AI.OpenAI --version 2.9.0-beta.1
+dotnet add package Microsoft.Agents.AI.A2A --version 1.0.0-preview.260402.1
+dotnet add package Microsoft.Agents.AI.OpenAI --version 1.0.0
+dotnet add package Microsoft.Agents.AI.Workflows --version 1.1.0
+```
+
+``` C#
 using System.ClientModel;
 using System.Text.Json;
 using A2A;
@@ -15,7 +25,9 @@ var config = new ConfigurationBuilder()
 string? token = config["GitHub:Token"];
 string? endpoint = config["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inference";
 string? model = config["GitHub:Model"] ?? "openai/gpt-4o-mini";
+```
 
+``` C#
 // Initialize chat client
 var chatClient = new OpenAIClient(
     new ApiKeyCredential(token!),
@@ -24,15 +36,22 @@ var chatClient = new OpenAIClient(
         Endpoint = new Uri(endpoint)
     })
     .GetChatClient(model).AsIChatClient();
+```
 
+``` C#
 // Connect to the A2A weather agent
 A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
+// A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("http://localhost:5000/"));
 AIAgent weatherAgent = await weatherAgentCardResolver.GetAIAgentAsync();
+```
 
+``` C#
 // Connect to the A2A calendar agent
 A2ACardResolver calendarAgentCardResolver = new A2ACardResolver(new Uri("http://localhost:5098/"));
 AIAgent calendarAgent = await calendarAgentCardResolver.GetAIAgentAsync();
+```
 
+``` C#
 // Create a client agent to summarize the event created
 var activitySummaryAgent = chatClient.AsAIAgent(
         name: "Assistant",
@@ -51,7 +70,9 @@ var activitySummaryAgent = chatClient.AsAIAgent(
         - Only suggest items if needed.");
 
 AIAgent workflowAgent = AgentWorkflowBuilder.BuildSequential(weatherAgent, calendarAgent, activitySummaryAgent).AsAIAgent();
+```
 
+``` C#
 // Send message to agent and stream response
 bool isDebug = true; // Toggle this to print messages from A2A agents
 AgentSession session = await workflowAgent.CreateSessionAsync();
@@ -134,3 +155,4 @@ catch (Exception ex)
 {
     Console.WriteLine($"\nAn error occurred: {ex.Message}");
 }
+```

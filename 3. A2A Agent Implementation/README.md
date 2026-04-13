@@ -326,7 +326,7 @@ In the terminal window:
 dotnet watch
 ```
 
-The web app will automatically open in your btowser at address [http://](http://localhost:????/swagger/index.html) with the interface that looks like this:
+The web app will automatically open in your btowser at address [http://localhost:????/swagger/index.html] with the interface that looks like this:
 
 ![Swagger Interface](swagger.png)
 

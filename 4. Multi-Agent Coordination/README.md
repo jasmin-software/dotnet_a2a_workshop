@@ -137,70 +137,53 @@ AgentSession session = await workflowAgent.CreateSessionAsync();
 List<ChatMessage> messages = [];
 Console.Write("\nEnter the outdoor activity you'd like to plan or :q to quit.\n");
 
-try
-{
-    while (true)
-    {
+try {
+    while (true) {
         // Get and validate user input
         Console.Write("\n> ");
         string? message = Console.ReadLine();
         string? lastAuthor = null;
 
-        if (string.IsNullOrWhiteSpace(message))
-        {
+        if (string.IsNullOrWhiteSpace(message)) {
             Console.WriteLine("\nRequest cannot be empty.");
             continue;
         }
-        if (message.ToLowerInvariant() is ":q" or "quit")
-        {
+
+        if (message.ToLowerInvariant() is ":q" or "quit") {
             break;
         }
 
         messages.Add(new ChatMessage(ChatRole.User, message));
 
         // Stream and print the response
-        await foreach (AgentResponseUpdate update in workflowAgent.RunStreamingAsync(messages, session))
-        {
-            foreach (AIContent content in update.Contents)
-            {
-                if (content is TextContent textContent)
-                {
-                    if (update.AuthorName != null)
-                    {
-                        if (lastAuthor != update.AuthorName)
-                        {
+        await foreach (AgentResponseUpdate update in workflowAgent.RunStreamingAsync(messages, session)) {
+            foreach (AIContent content in update.Contents) {
+                if (content is TextContent textContent) {
+                    if (update.AuthorName != null) {
+                        if (lastAuthor != update.AuthorName) {
                             lastAuthor = update.AuthorName;
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"\n[{update.AuthorName}]");
                             Console.ResetColor();
                         }
-                        if (update.AuthorName == activitySummaryAgent.Name)
-                        {
+
+                        if (update.AuthorName == activitySummaryAgent.Name) {
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write(textContent.Text);
                         }
-                    }
-                    else
-                    {
-                        if (isDebug && update.RawRepresentation is AgentMessage agentMessage)
-                        {
-                            if (update.Role == ChatRole.Assistant)
-                            {
+                    } else {
+                        if (isDebug && update.RawRepresentation is AgentMessage agentMessage) {
+                            if (update.Role == ChatRole.Assistant) {
                                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                                if (update.AgentId == weatherAgent.Id)
-                                {
+                                if (update.AgentId == weatherAgent.Id) {
                                     Console.WriteLine($"\n[A2A Agent: Weather Agent] \n{textContent.Text}");
-                                }
-                                else if (update.AgentId == calendarAgent.Id)
-                                {
+                                } else if (update.AgentId == calendarAgent.Id) {
                                     Console.WriteLine($"\n[A2A Agent: Calendar Agent] \n{textContent.Text}");
                                 }
                             }
                         }
                     }
-                }
-                else if (content is ErrorContent errorContent)
-                {
+                } else if (content is ErrorContent errorContent) {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"\n[Error: {update.RawRepresentation}]");
                 }
@@ -208,9 +191,7 @@ try
             Console.ResetColor();
         }
     }
-}
-catch (Exception ex)
-{
+} catch (Exception ex) {
     Console.WriteLine($"\nAn error occurred: {ex.Message}");
 }
 ```

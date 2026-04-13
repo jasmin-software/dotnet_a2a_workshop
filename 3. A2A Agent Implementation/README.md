@@ -328,7 +328,7 @@ dotnet watch
 
 The web app will automatically open in your btowser at address [http://](http://localhost:????/swagger/index.html) with the interface that looks like this:
 
-![alt text](![Swagger Interface](image.png).png)
+![Swagger Interface](swagger.png)
 
 <details>
 

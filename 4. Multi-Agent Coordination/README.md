@@ -11,7 +11,7 @@ This means two agents will get engaged to fulfill the task:
 2. The calendar agent
 3. The activity summary agent
 
-Workflow concepts are introduced in the walkthrough since more than one agent are involved in the solution. In this scenario, we will setup a sequential workflow.
+Workflow concepts are introduced in the walkthrough since more than one agent is involved in the solution. In this scenario, we will setup a sequential workflow.
 
 ### Setup
 

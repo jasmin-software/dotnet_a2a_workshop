@@ -8,7 +8,8 @@ Schedule the activity for me after determining the most suitable time depending 
 
 This means two agents will get engaged to fulfill the task:
 1. The weather agent
-2. The Scheduling agent
+2. The calendar agent
+3. The activity summary agent
 
 Workflow concepts are introduced in the walkthrough since more than one agent are involved in the solution. In this scenario, we will setup a sequential workflow.
 

@@ -104,7 +104,7 @@ A2ACardResolver calendarAgentCardResolver = new A2ACardResolver(new Uri("http://
 AIAgent calendarAgent = await calendarAgentCardResolver.GetAIAgentAsync();
 ```
 
-### Create a client agent to summarize the event created
+### Create a client agent to summarize the workflow
 
 ``` C#
 // Create a client agent to summarize the event created

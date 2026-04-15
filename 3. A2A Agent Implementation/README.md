@@ -332,20 +332,39 @@ dotnet watch
 
 The web app will automatically open in your browser at address `/swagger/index.html` with an interface that looks like this:
 
-![Swagger Interface](swagger.png)
+![Swagger Interface](images/swagger.png)
 
 ### Test your app
 
-Choose the GET `/v1/card` endpoint. Then, click on the `try it out` button.
+Choose the GET `/v1/message:stream` endpoint. Then, click on the `try it out` button.
 
-![GET /v1/card try it out](try-it-out.png)
+![Message Stream](images/message-stream.png)
 
-Click on the `Execute` button. 
+Enter the following JSON then click on `Execute`:
 
-![Execute button](execute.png)
+```json
+{
+  "message": {
+    "kind": "message",
+    "role": "user",
+    "parts": [
+      {
+        "kind": "text",
+        "text": "Add to my calendar a visit to the dentist on May 4, 2026 at 10 AM for one hour.",
+        "metadata": {}
+      }
+    ],
+    "messageId": null,
+    "contextId": "foo"
+  }
+}
+```
+
+![Execute Button](images/execute.png)
+
 
 The response from the agent will display.
 
-![alt text](server-response.png)
+![server response](images/server-response.png)
 
 Go ahead and try the other endpoints.

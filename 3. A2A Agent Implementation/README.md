@@ -65,7 +65,7 @@ public interface ICalendarStore {
 }
 ```
 
-### InMemoryCalendarStore
+### InMemoryCalendarStore.cs
 
 ```C#
 namespace A2AAgent.Tools;

@@ -338,7 +338,7 @@ The web app will automatically open in your browser at address `/swagger/index.h
 
 ### Test your app
 
-Choose the GET `/v1/message:stream` endpoint. Then, click on the `try it out` button.
+Choose the GET `/v1/message:stream` endpoint. Then, click on the `Try it out` button.
 
 ![Message Stream](images/message-stream.png)
 
@@ -369,4 +369,4 @@ The response from the agent will display.
 
 ![server response](images/server-response.png)
 
-Go ahead and try the other endpoints.
+Go ahead and ask the agent your schedule for May 4, 2026, or try other endpoints.

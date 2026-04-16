@@ -1,6 +1,6 @@
 ![A2A discovery](discovery.png)
 
-We will create a simple application that is able to discover the capabilities of an agent that is already deployed online. The URL of the agent is <a href="https://a2a-weather.azurewebsites.net/swagger">https://a2a-weather.azurewebsites.net/</a>.
+We will create a simple application that is able to discover the capabilities of an agent that is already deployed online. The URL of the agent is [https://a2a-weather.azurewebsites.net/](https://a2a-weather.azurewebsites.net/swagger).
 
 Let's first create a simple .NET console app with the following terminal window command:
 

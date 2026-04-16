@@ -1,3 +1,5 @@
+![Vancouver Weather](weather-in-yvr.png)
+
 In the previous example, we were able to discover the capabilities of a weather agent at https://netbc-weather-agent.azurewebsites.net/. In this example, we will interact with that agent by asking it for weather conditions in a particular city.
 
 ### Setup

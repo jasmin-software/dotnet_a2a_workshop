@@ -77,7 +77,7 @@ var chatClient = new OpenAIClient(
 
 ``` C#
 // Connect to the A2A weather agent
-A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
+A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://a2a-weather.azurewebsites.net/"));
 AIAgent weatherAgent = await weatherAgentCardResolver.GetAIAgentAsync();
 ```
 

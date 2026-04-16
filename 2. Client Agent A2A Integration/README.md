@@ -98,6 +98,7 @@ var agent = chatClient.AsAIAgent(
 
 ``` C#
 // Send message to agent and stream response
+var isDebug = false;
 var response = agent.RunStreamingAsync("What is the weather like in Vancouver?");
 await foreach (var update in response)
 {
@@ -107,7 +108,7 @@ await foreach (var update in response)
         {
             Console.Write(textContent.Text);
         }
-        else if (content is FunctionCallContent functionCallContent)
+        else if (isDebug && content is FunctionCallContent functionCallContent)
         {                    
             var argsJson = JsonSerializer.Serialize(
                 functionCallContent.Arguments,
@@ -116,7 +117,7 @@ await foreach (var update in response)
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"\n[Function Call: {functionCallContent.Name}]\nArguments:\n{argsJson}");
         }
-        else if (content is FunctionResultContent functionResultContent)
+        else if (isDebug && content is FunctionResultContent functionResultContent)
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"\n[Function Result: {functionResultContent.Result}]");

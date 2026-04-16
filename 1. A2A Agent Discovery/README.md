@@ -22,7 +22,7 @@ using A2A;
 using Microsoft.Extensions.AI;
 
 // Get agent card
-A2ACardResolver agentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
+A2ACardResolver agentCardResolver = new A2ACardResolver(new Uri("https://a2a-weather.azurewebsites.net/"));
 AgentCard agentCard = await agentCardResolver.GetAgentCardAsync();
 
 JsonSerializerOptions s_indentedOptions = new(A2AJsonUtilities.DefaultOptions){ WriteIndented = true};

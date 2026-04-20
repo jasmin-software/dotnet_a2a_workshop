@@ -4,7 +4,7 @@
 
 We will create a simple application to discover the capabilities of a weather agent. The URL of the agent is [https://a2a-weather.azurewebsites.net/](https://a2a-weather.azurewebsites.net/swagger).
 
-Let's first create a simple .NET console app with the following terminal window command:
+Let's first create a .NET console app with the following terminal window command:
 
 ## Setup
 

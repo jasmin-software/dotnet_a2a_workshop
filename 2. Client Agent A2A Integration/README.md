@@ -1,10 +1,14 @@
+# 2. Client Agnet A2A Integration
+## How do we interact with an A2A agent? 
 ![Vancouver Weather](weather-in-yvr.png)
 
-In the previous example, we were able to discover the capabilities of a weather agent at https://netbc-weather-agent.azurewebsites.net/. In this example, we will interact with that agent by asking it for weather conditions in a particular city.
+In the previous example, we discovered the capabilities of the weather agent on [https://a2a-weather.azurewebsites.net/](https://a2a-weather.azurewebsites.net/swagger). 
 
-### Setup
+In this example, we will build a client agent to interact with that agent. We would be able to ask the agent what the weather is like in a particular city.
 
-Create a simple .NET web application with the following terminal window commands:
+## Setup
+
+In a new directory, create a new .NET web application with the following terminal window commands:
 
 ``` bash
 dotnet new web -n '2. Client Agent A2A Integration'
@@ -35,12 +39,11 @@ Replace `appsettings.Development.json` with this JSON code:
 
 Edit the `.gitignore` file and add to it `appsettings.Development.json` so that your secrets do not find their way into source control by mistake.
 
-### Set up chat client configuration
+## Program.cs
 
-Delete any existing code in `Program.cs`.
+Replace existing code in `Program.cs` with the  following code in sequence.
 
-Add the following code in sequence.
-
+### Read configuration settings
 ``` C#
 using System.ClientModel;
 using System.Text.Json;
@@ -60,8 +63,7 @@ string? endpoint = config["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inf
 string? model = config["GitHub:Model"] ?? "openai/gpt-4o-mini";
 ```
 
-### Initialize chat client
-
+### Initialize chat client and connect to the A2A weather agent
 ``` C#
 // Initialize chat client
 var chatClient = new OpenAIClient(
@@ -71,17 +73,13 @@ var chatClient = new OpenAIClient(
         Endpoint = new Uri(endpoint)
     })
     .GetChatClient(model).AsIChatClient();
-```
 
-### Connect to the A2A weather agent
-
-``` C#
 // Connect to the A2A weather agent
 A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://a2a-weather.azurewebsites.net/"));
 AIAgent weatherAgent = await weatherAgentCardResolver.GetAIAgentAsync();
 ```
 
-### Create a client agent that uses the weather agent as a tool
+### Create an agent that uses the A2A weather agent as a tool
 
 ``` C#
 // Create a client agent that uses the weather agent as a tool
@@ -127,7 +125,7 @@ await foreach (var update in response)
 }
 ```
 
-### Run app
+## Run app
 
 In the terminal window:
 
@@ -150,3 +148,5 @@ No precipitation is expected, and the weather will gradually become sunnier and 
 ```
 
 </details>
+
+## Next: [3. A2A Agent Implementation](https://github.com/jasmin-software/dotnet_a2a_workshop/tree/master/3.%20A2A%20Agent%20Implementation)

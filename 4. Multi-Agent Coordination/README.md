@@ -95,7 +95,7 @@ var chatClient = new OpenAIClient(
 
 // Create a client-side agent to summarize the event created
 var summaryAgent = chatClient.AsAIAgent(
-        name: "Assistant",
+        name: "Summary Agent",
         instructions: @"You are a calendar event summary assistant.
         You are the final step in a workflow. Earlier agents selected a time based on weather and created the event.
 

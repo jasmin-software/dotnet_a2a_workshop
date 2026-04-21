@@ -76,7 +76,7 @@ string? model = config["GitHub:Model"] ?? "openai/gpt-4o-mini";
 ### Connect to A2A agents from previous steps
 ``` C#
 // Connect to the A2A weather agent
-A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
+A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://a2a-weather.azurewebsites.net/"));
 AIAgent weatherAgent = await weatherAgentCardResolver.GetAIAgentAsync();
 
 // Connect to the A2A calendar agent

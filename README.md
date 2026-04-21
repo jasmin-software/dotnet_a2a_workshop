@@ -1,0 +1,8 @@
+# 👋 Welcome to the Agent-to-Agent (A2A) workshop with Microsoft Agent Framework!
+
+## Click [here](https://github.com/jasmin-software/dotnet_a2a_workshop/blob/master/0.%20GitHub%20Token/README.md) to get started!
+**Note: You do not need to clone this repo.** We provide the commands to create the projects from scratch. Just make a new folder to keep the projects organized!
+
+## Looking for something else?
+- [Slides](https://docs.google.com/presentation/d/1FbE1EruCsHZSQr6VQ0NH0TElRbhwnVaY4Tow8ibp0Ok)
+- [AG-UI workshop](https://github.com/jasmin-software/dotnet_agui_workshop/tree/main)

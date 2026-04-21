@@ -264,7 +264,11 @@ You can toggle the `isDebug` flag to true to see exactly what the weather and ca
 ```
 ```
 [A2A Agent: Calendar Agent] 
-It looks like you're planning a hike along the Knox Mountain - Apex Trail in Kelowna. The weather forecast for April 22 shows an overcast condition with temperatures ranging from 10.6°C at 10:00 AM increasing steadily to 14.1°C by 4:00 PM. It remains overcast most of the day with lighter conditions turning partly cloudy later in the afternoon.
+It looks like you're planning a hike along the Knox Mountain - Apex Trail in Kelowna. 
+
+The weather forecast for April 22 shows an overcast condition with temperatures ranging from 10.6°C at 10:00 AM increasing steadily to 14.1°C by 4:00 PM. 
+
+It remains overcast most of the day with lighter conditions turning partly cloudy later in the afternoon.
 ```
 
 

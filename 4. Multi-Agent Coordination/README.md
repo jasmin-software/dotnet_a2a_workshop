@@ -207,7 +207,7 @@ You'd be prompted with this:
 Enter the outdoor activity you'd like to plan or :q to quit.
 ```
 
-Go ahead and ask the agent to schedule a run or a hike for you, e.g.,
+Go ahead and ask the agent to schedule a run, hike, or picnic for you, e.g.,
 
 ```
 I want to hike along the Knox Mountain - Apex Trail in Kelowna, BC, Canada tomorrow.

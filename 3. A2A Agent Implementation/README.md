@@ -1,7 +1,14 @@
+# 3. A2A Agent Implementation
+
+## How do we create our own A2A agent?
+
+In this walkthrough, you will create calendar assistant agent.
+
+We would be able to ask the agent to schedule an event for us, or list our schedule of the day.
+
 ![robot](robot.png)
 
-In this walkthrough, you will create personal calendar assistant agent that schedules and lists events on your behalf.
-
+## Setup
 Create a simple .NET web application with the following terminal window commands:
 
 ``` bash
@@ -37,7 +44,7 @@ Edit the `.gitignore` file and add to it `appsettings.Development.json` so that 
 
 ## Tools
 
-Add the following C# class files into the `Tools` folder:
+Create the following C# class files in the `Tools` folder:
 
 ### CalendarEvents.cs
 
@@ -139,8 +146,9 @@ public sealed class InMemoryCalendarStore : ICalendarStore {
 ### CalendarTool.cs
 
 The `CalendarTool` has the smarts to carry out two related tasks. It can:
-- Get all events that fall on a specific date
-- Create an event given: the event title, start time, end time, event location (optional), and event description (optionsl)
+- Get all events on a specific date
+- Create an event with a given event title, start time, end time (and optionally event location and event description)
+
 ```C#
 using System.ComponentModel;
 
@@ -210,9 +218,10 @@ internal static class CalendarTool {
     }
 }
 ```
+## Program.cs
+Replace `Program.cs` with the following code in sequence.
 
-Replace `Program.cs` with the following code:
-
+### Read configuration settings
 ``` C#
 using A2A;
 using A2A.AspNetCore;
@@ -225,14 +234,16 @@ builder.Services.AddSingleton<ICalendarStore, InMemoryCalendarStore>();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
+// Read configuration settings
 string githubToken = builder.Configuration["GitHub:Token"]
     ?? throw new InvalidOperationException("GitHub:Token is not set.");
 string endpoint = builder.Configuration["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inference";
 string model = builder.Configuration["GitHub:Model"] ?? "openai/gpt-4o-mini";
 ```
 
-Create chat client and agent.
+### Initialize chat client and agent
 ``` C#
+// Initialize chat client
 IChatClient chatClient = new OpenAIClient(
     new System.ClientModel.ApiKeyCredential(githubToken),
     new OpenAIClientOptions
@@ -241,6 +252,7 @@ IChatClient chatClient = new OpenAIClient(
     })
     .GetChatClient(model).AsIChatClient();
 
+// Create agent
 var calendarAgent = chatClient.AsAIAgent(
     name: "calendar",
     instructions:
@@ -273,9 +285,9 @@ app.UseSwagger();
 app.UseSwaggerUI();
 ```
 
-Customize agent card.
+### Customize agent card
 ``` C#
-// customize agent card
+// Customize agent card
 AgentCard calendarAgentCard = new AgentCard {
     Name = "Calendar Agent",
     Description = "A calendar assistant that can list and create events for a particular date.",
@@ -303,9 +315,9 @@ AgentCard calendarAgentCard = new AgentCard {
 };
 ```
 
-Expose agent via A2A protocol
+### Expose agent via A2A protocol
 ``` C#
-// expose agent via A2A protocol
+// Expose agent via A2A protocol
 app.MapA2A(
     calendarAgent, 
     path: "/", 
@@ -318,13 +330,13 @@ app.Run();
 
 Open `Properties/launchSettings.json` in your editor and make the following changes:
 
-Inside the `http` and `https` blocks, add the following:
+Add the following inside the `http` and `https` blocks:
 
 ```json
 "launchUrl": "swagger"
 ```
 
-### Run app
+## Run app
 
 In the terminal window:
 
@@ -352,7 +364,7 @@ Enter the following JSON then click on `Execute`:
     "parts": [
       {
         "kind": "text",
-        "text": "Add to my calendar a visit to the dentist on May 4, 2026 at 10 AM for one hour.",
+        "text": "Schedule a visit to the dentist on May 4, 2026 at 10 AM for one hour.",
         "metadata": {}
       }
     ],
@@ -364,9 +376,10 @@ Enter the following JSON then click on `Execute`:
 
 ![Execute Button](images/execute.png)
 
-
 The response from the agent will display.
 
 ![server response](images/server-response.png)
 
-Go ahead and ask the agent your schedule for May 4, 2026, or try other endpoints.
+Go ahead and change the `text` field in the `Request body` and ask the agent your schedule for May 4, 2026.
+
+## Next: [4. Multi-Agent Coordination](https://github.com/jasmin-software/dotnet_a2a_workshop/blob/master/4.%20Multi-Agent%20Coordination/README.md)

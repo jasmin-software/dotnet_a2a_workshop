@@ -127,9 +127,10 @@ Received complete response from agent:
 </details>
 
 <details>
+<br>
 <summary>Streaming option</summary>
 Optionally, you can also stream the response from the agent.  
-
+<br><br>
 Comment out this code.
 
 ```C#
@@ -138,7 +139,7 @@ Comment out this code.
 // Console.WriteLine($"Received complete response from agent: {response.Text}\n");
 ```
 
-Add the following code to get the response faster since it is streamed in real-time.
+Add the following to get the response faster since it is streamed in real-time.
 
 ``` C#
 // Send message and stream the response
@@ -155,6 +156,9 @@ await foreach (var update in streamingResponse)
     }
 }
 ```
+
+Run the app, i.e., `dotnet run`, you'll get the same output, but streamed in real-time.
+
 </details>
 
 

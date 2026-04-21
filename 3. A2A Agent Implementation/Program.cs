@@ -9,12 +9,13 @@ builder.Services.AddSingleton<ICalendarStore, InMemoryCalendarStore>();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
+// Read configuration settings
 string githubToken = builder.Configuration["GitHub:Token"]
     ?? throw new InvalidOperationException("GitHub:Token is not set.");
 string endpoint = builder.Configuration["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inference";
 string model = builder.Configuration["GitHub:Model"] ?? "openai/gpt-4o-mini";
 
-// Create chat client and agent
+// Initialize chat client
 IChatClient chatClient = new OpenAIClient(
     new System.ClientModel.ApiKeyCredential(githubToken),
     new OpenAIClientOptions
@@ -23,23 +24,25 @@ IChatClient chatClient = new OpenAIClient(
     })
     .GetChatClient(model).AsIChatClient();
 
+// Create agent
 var calendarAgent = chatClient.AsAIAgent(
     name: "calendar",
-    instructions:@"You are a calendar assistant for reading and creating events.
-    Capabilities:
-    - Retrieve events for a given date.
-    - Create events with title, start time, end time, and optional location/description.
+    instructions:
+    """
+    You are a calendar assistant.
+    You list calendar events given a date, and you create new events with 
+    a title, start time, end time, and optional location and description.
 
-    Behavior:
-    - Be concise and action-oriented.
-    - Never ask for confirmation.
+    Rules:
+    - When the user asks what is on a day, use the GetEventsOnDate tools.
+    - If a user wants to create an event, gather title, start time, and end time if missing, 
+      and use the CreateEvent tool.
+    - Do not create the event if there is already an event that overlaps with the requested time.
+    - Keep responses concise and helpful.
+    - Always confirm created events with the exact time.
 
-    Output:
-    - Retrieval: '- {Title}: {Start} to {End}' (bullets only, no extra text).
-    - Creation: 'Event '{Title}' created on {Start} to {End}.'
-
-    Context:
-    - Today is 2026-04-21.",
+    - Today is 2026-04-21.
+    """,
     tools: [
         AIFunctionFactory.Create(CalendarTool.GetEventsOnDate),
         AIFunctionFactory.Create(CalendarTool.CreateEvent)
@@ -53,9 +56,8 @@ app.MapOpenApi();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Expose the agent over A2A
-AgentCard calendarAgentCard = new AgentCard
-{
+// Customize agent card
+AgentCard calendarAgentCard = new AgentCard {
     Name = "Calendar Agent",
     Description = "A calendar assistant that can list and create events for a particular date.",
     Version = "1.0.0",
@@ -81,6 +83,7 @@ AgentCard calendarAgentCard = new AgentCard
     ]
 };
 
+// Expose agent via A2A protocol
 app.MapA2A(
     calendarAgent, 
     path: "/", 

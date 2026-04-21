@@ -341,7 +341,7 @@ Add the following inside the `http` and `https` blocks:
 In the terminal window:
 
 ```bash
-dotnet watch
+dotnet watch --urls=http://localhost:5098
 ```
 
 The Swagger interface will automatically open in your browser:

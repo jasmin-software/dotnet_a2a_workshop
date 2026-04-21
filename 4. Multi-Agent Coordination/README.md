@@ -218,6 +218,22 @@ I want to hike along the Knox Mountain - Apex Trail in Kelowna, BC, Canada tomor
 <summary>Here's an example of the output</summary>
 
 ```
+[Client Agent: Summary Agent]
+Your hike along the Knox Mountain - Apex Trail is scheduled from 1:00 PM to 4:00 PM.
+
+This time was chosen for the mild temperature of around 11-14°C and the partly cloudy conditions expected by the afternoon, making it comfortable for outdoor activity.
+
+Bring layers and water, as temperatures may be cooler earlier on.
+```
+</details>
+
+<details>
+
+<summary>Debug logs</summary>
+<br>
+You can toggle the `isDebug` flag to true to see exactly what the weather and calendar agents are returning:
+
+``` json
 [A2A Agent: Weather Agent] 
 {
     "current": {
@@ -247,14 +263,9 @@ I want to hike along the Knox Mountain - Apex Trail in Kelowna, BC, Canada tomor
 
 [A2A Agent: Calendar Agent] 
 It looks like you're planning a hike along the Knox Mountain - Apex Trail in Kelowna. The weather forecast for April 22 shows an overcast condition with temperatures ranging from 10.6°C at 10:00 AM increasing steadily to 14.1°C by 4:00 PM. It remains overcast most of the day with lighter conditions turning partly cloudy later in the afternoon.
-
-[Client Agent: Summary Agent]
-Your hike along the Knox Mountain - Apex Trail is scheduled from 1:00 PM to 4:00 PM.
-
-This time was chosen for the mild temperature of around 11-14°C and the partly cloudy conditions expected by the afternoon, making it comfortable for outdoor activity.
-
-Bring layers and water, as temperatures may be cooler earlier on.
 ```
+
+
 </details>
 
 ## That's all! 

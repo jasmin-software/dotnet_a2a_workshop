@@ -9,7 +9,7 @@ We would be able to ask the agent to schedule an event for us, or list our sched
 ![robot](robot.png)
 
 ## Setup
-Create a simple .NET web application with the following terminal window commands:
+In a new directory, create a .NET web application with the following terminal window commands:
 
 ``` bash
 dotnet new web -n '3. A2A Agent Implementation'
@@ -344,7 +344,7 @@ In the terminal window:
 dotnet watch
 ```
 
-The web app will automatically open in your browser at address `/swagger/index.html` with an interface that looks like this:
+The Swagger interface will automatically open in your browser:
 
 ![Swagger Interface](images/swagger.png)
 

@@ -108,13 +108,13 @@ Received complete response from agent:
     "today": {
         "hourly": [
             {
-                "time": "2026-04-12T00:00",
+                "time": "2026-04-22T00:00",
                 "temperature": "8.8°C",
                 "precipitation": "0 mm",
                 "condition": "Partly cloudy"
             },
             {
-                "time": "2026-04-12T01:00",
+                "time": "2026-04-22T01:00",
                 "temperature": "8.5°C",
                 "precipitation": "0 mm",
                 "condition": "Partly cloudy"

@@ -170,7 +170,7 @@ Arguments:
 [Function Result]
 {
     "current": {
-        "time": "2026-04-12T09:00",
+        "time": "2026-04-21T09:00",
         "temperature": "10.4°C",
         "feelsLike": "9.5°C",
         "windSpeed": "5.6 km/h",
@@ -179,13 +179,13 @@ Arguments:
     "today": {
         "hourly": [
             {
-                "time": "2026-04-12T00:00",
+                "time": "2026-04-22T00:00",
                 "temperature": "8.8°C",
                 "precipitation": "0 mm",
                 "condition": "Partly cloudy"
             },
             {
-                "time": "2026-04-12T01:00",
+                "time": "2026-04-22T01:00",
                 "temperature": "8.5°C",
                 "precipitation": "0 mm",
                 "condition": "Partly cloudy"

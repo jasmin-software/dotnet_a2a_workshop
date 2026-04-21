@@ -121,7 +121,7 @@ AIAgent workflowAgent = AgentWorkflowBuilder.BuildSequential(
 
 ``` C#
 // Send message to agents and stream response
-bool isDebug = true; // Toggle this to print messages from A2A agents
+bool isDebug = false;
 AgentSession session = await workflowAgent.CreateSessionAsync();
 List<ChatMessage> messages = [];
 Console.Write("\nEnter the outdoor activity you'd like to plan or :q to quit.\n");
@@ -160,7 +160,8 @@ try {
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write(textContent.Text);
                         }
-                    } else {
+                    } 
+                    else {
                         if (isDebug && update.RawRepresentation is AgentMessage agentMessage) {
                             if (update.Role == ChatRole.Assistant) {
                                 Console.ForegroundColor = ConsoleColor.DarkGray;

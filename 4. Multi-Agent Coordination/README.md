@@ -73,7 +73,7 @@ string? endpoint = config["GitHub:ApiEndpoint"] ?? "https://models.github.ai/inf
 string? model = config["GitHub:Model"] ?? "openai/gpt-4o-mini";
 ```
 
-### Connect to the A2A agents from previous steps
+### Connect to A2A agents from previous steps
 ``` C#
 // Connect to the A2A weather agent
 A2ACardResolver weatherAgentCardResolver = new A2ACardResolver(new Uri("https://netbc-weather-agent.azurewebsites.net/"));
@@ -84,7 +84,7 @@ A2ACardResolver calendarAgentCardResolver = new A2ACardResolver(new Uri("http://
 AIAgent calendarAgent = await calendarAgentCardResolver.GetAIAgentAsync();
 ```
 
-### Initialize chat client and create a summary agent
+### Create a summary agent and set up the workflow
 ``` C#
 // Initialize chat client
 var chatClient = new OpenAIClient(
@@ -112,14 +112,14 @@ var summaryAgent = chatClient.AsAIAgent(
         - Do not include unnecessary details.
         - Only suggest items if needed.");
 
-// setup a sequential workflow agent that makes sequential
-// requests to weather, calendar, and summary agents 
+// Set up sequential workflow agent
 AIAgent workflowAgent = AgentWorkflowBuilder.BuildSequential(
-    weatherAgent, calendarAgent, summaryAgent
-).AsAIAgent();
+    weatherAgent, 
+    calendarAgent,
+    summaryAgent).AsAIAgent();
 ```
 
-### Send message to agents and stream response
+### Send message to agents
 
 ``` C#
 // Send message to agents and stream response
@@ -151,39 +151,17 @@ try {
             foreach (AIContent content in update.Contents) {
                 if (content is TextContent textContent) {
                     if (update.AuthorName != null) {
-                        if (lastAuthor != update.AuthorName) {
-                            lastAuthor = update.AuthorName;
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"\n[{update.AuthorName}]");
-                            Console.ResetColor();
-                        }
-
                         if (update.AuthorName == summaryAgent.Name) {
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write(textContent.Text);
                         }
                     } 
-                    else {
-                        if (isDebug && update.RawRepresentation is AgentMessage agentMessage) {
-                            if (update.Role == ChatRole.Assistant) {
-                                Console.ForegroundColor = ConsoleColor.DarkGray;
-                                if (update.AgentId == weatherAgent.Id) {
-                                    Console.WriteLine($"\n[A2A Agent: Weather Agent] \n{textContent.Text}");
-                                } else if (update.AgentId == calendarAgent.Id) {
-                                    Console.WriteLine($"\n[A2A Agent: Calendar Agent] \n{textContent.Text}");
-                                }
-                            }
-                        }
-                    }
-                } else if (content is ErrorContent errorContent) {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"\n[Error: {update.RawRepresentation}]");
                 }
             }
-            Console.ResetColor();
         }
     }
-} catch (Exception ex) {
+} 
+catch (Exception ex) {
     Console.WriteLine($"\nAn error occurred: {ex.Message}");
 }
 ```
@@ -234,8 +212,75 @@ Bring layers and water, as temperatures may be cooler earlier on.
 <summary>Debug logs</summary>
 <br>
 
-You can toggle the `isDebug` flag to true to see exactly what the weather and calendar agents are returning:
+If you'd like to see debug logs, you can toggle the `isDebug` flag to true and replace the try-catch block with the following:
 
+``` C#
+try {
+    while (true) {
+        // Get and validate user input
+        Console.Write("\n> ");
+        string? message = Console.ReadLine();
+        string? lastAuthor = null;
+
+        if (string.IsNullOrWhiteSpace(message)) {
+            Console.WriteLine("\nRequest cannot be empty.");
+            continue;
+        }
+
+        if (message.ToLowerInvariant() is ":q" or "quit") {
+            break;
+        }
+
+        messages.Add(new ChatMessage(ChatRole.User, message));
+
+        // Stream and print the response
+        await foreach (AgentResponseUpdate update in workflowAgent.RunStreamingAsync(messages, session)) {
+            foreach (AIContent content in update.Contents) {
+                if (content is TextContent textContent) {
+                    if (update.AuthorName != null) {
+                        if (isDebug && lastAuthor != update.AuthorName) {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            lastAuthor = update.AuthorName;
+                            Console.WriteLine($"\n[Client Agent: {update.AuthorName}]");
+                        }
+                        if (update.AuthorName == summaryAgent.Name) {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write(textContent.Text);
+                        }
+                    } 
+                    else {
+                        if (isDebug && update.RawRepresentation is AgentMessage agentMessage) {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            if (update.Role == ChatRole.Assistant) {
+                                if (update.AgentId == weatherAgent.Id) {
+                                    Console.WriteLine($"\n[A2A Agent: Weather Agent]");
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                                    Console.WriteLine($"{textContent.Text}");
+                                } 
+                                else if (update.AgentId == calendarAgent.Id) {
+                                    Console.WriteLine($"\n[A2A Agent: Calendar Agent]");
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                                    Console.WriteLine($"{textContent.Text}");
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (content is ErrorContent errorContent) {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n[Error: {update.RawRepresentation}]");
+                }
+            }
+            Console.ResetColor();
+        }
+    }
+}
+catch (Exception ex) {
+    Console.WriteLine($"\nAn error occurred: {ex.Message}");
+}
+```
+
+ You'll see exactly what the weather and calendar agents are returning:
 ``` json
 [A2A Agent: Weather Agent] 
 {

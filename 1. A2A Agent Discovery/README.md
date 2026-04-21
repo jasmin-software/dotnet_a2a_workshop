@@ -127,7 +127,6 @@ Received complete response from agent:
 </details>
 
 <details>
-<br>
 <summary>Streaming option</summary>
 Optionally, you can also stream the response from the agent.  
 <br><br>

@@ -139,7 +139,7 @@ No precipitation is expected, and the weather will gradually become sunnier and 
 <summary>Debug logs</summary>
 <br>
 
-If you'd like to see the debug logs (e.g., what arguments is being passed in, what is the raw resule), add these else-if block to the `update.Contents` loop:
+If you'd like to see the debug logs, add these else-if block to the `update.Contents` loop:
 
 ``` C#
         else if (isDebug && content is FunctionCallContent functionCallContent)
